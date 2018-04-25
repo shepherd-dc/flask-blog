@@ -1,4 +1,8 @@
 .main{
     background:#f7f7f7;
     margin:0 auto;
+    padding:50px 0;
+}
+.sign{
+    text-align: center;
 }
