@@ -1,7 +1,7 @@
 # flask-blog
 
 ## install requirements
-> pip install -r requirements
+> pip install -r requirements.txt
 
 ## run server
 > python app.py
