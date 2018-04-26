@@ -7,7 +7,7 @@
         </a>
     </div>
     <div class="media-body">
-        <a href="#">
+        <a href="{{url_for('detail', question_id=qa.id)}}" style="color:#111;">
             <h4 class="media-heading">{{qa.title}}</h4>
             <p>{{qa.content}}</p>
         </a>
