@@ -69,10 +69,14 @@ def login_username():
 
 @app.route('/question/', methods=['GET', 'POST'])
 def question():
-    if request.method == 'GET':
-        return render_template('question.html')
+    is_login = session.get('username')
+    if is_login:
+        if request.method == 'GET':
+            return render_template('question.html')
+        else:
+            pass
     else:
-        pass
+        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run()
