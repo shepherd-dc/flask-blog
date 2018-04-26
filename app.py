@@ -43,8 +43,11 @@ def register():
         repassword = request.form.get('repassword')
 
         user = User.query.filter(User.email == email).first()
+        
         if user:
             return '该用户已被注册！'
+        elif email=='' or username=='' or password=='' or repassword=='':
+            return '输入内容不能为空！'
         else:
             if password != repassword:
                 return '两次输入的密码不一致！'
@@ -63,6 +66,13 @@ def login_username():
         if user:
             return {'user':user}
     return {}
+
+@app.route('/question/', methods=['GET', 'POST'])
+def question():
+    if request.method == 'GET':
+        return render_template('question.html')
+    else:
+        pass
 
 if __name__ == '__main__':
     app.run()
