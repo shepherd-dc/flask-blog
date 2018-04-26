@@ -1,9 +1,5 @@
-{% extends 'base.html' %}
-{% block title %}首页{% endblock %}
-{% block head %}
-    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
-{% endblock %}
-{% block main %}
+{% extends 'base.html' %} {% block title %}首页{% endblock %} {% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}"> {% endblock %} {% block main %} {% for qa in questions %}
 <div class="media index_media">
     <div class="media-left">
         <a href="#">
@@ -11,9 +7,11 @@
         </a>
     </div>
     <div class="media-body">
-        <h4 class="media-heading">Media heading</h4>
-        <p>放到数据库所在地发挥非正式打开两极分化这款手机登录回复空间最喜欢看见了这些边境执行恐惧和这些接口是合作新空间和是科技自行车是空间最喜欢是须召开计划是张子旭空间最喜欢</p>
-        <span class="pull-right" style="padding-right:10px;"><b>Shepherd</b> 2018/4/26 12:12:12</span>
+        <a href="#">
+            <h4 class="media-heading">{{qa.title}}</h4>
+            <p>{{qa.content}}</p>
+        </a>
+        <span class="pull-right" style="padding-right:10px;"><b>{{qa.author.username}}</b> {{qa.create_time}}</span>
     </div>
 </div>
-{% endblock %}
+{% endfor %} {% endblock %}

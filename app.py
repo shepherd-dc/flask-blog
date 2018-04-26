@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import config
 from exts import db
-from models import User
+from models import User, Question
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -9,7 +9,10 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    context = {
+        'questions': Question.query.order_by(db.desc(Question.create_time)).all()
+    }
+    return render_template('index.html', **context)
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -58,6 +61,32 @@ def register():
                 flash('注册成功，请登录！')
                 return redirect(url_for('login'))
 
+@app.route('/question/', methods=['GET', 'POST'])
+def question():
+    is_login = session.get('username')
+    if is_login:
+        if request.method == 'GET':
+            return render_template('question.html')
+        else:
+            title = request.form.get('title')
+            content = request.form.get('content')
+            if title == '' or content == '':
+                return '输入内容不能为空！'
+            else:
+                author = User.query.filter(User.username == is_login).first()
+                question = Question(title=title, content=content, author_id=author.id)
+                db.session.add(question)
+                print(question.create_time)
+                db.session.commit()
+                flash('发布成功！')
+                return redirect(url_for('index'))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/detail/<question_id>/')
+def detail(question_id):
+    return render_template('detail.html')
+
 @app.context_processor
 def login_username():
     login_username = session.get('username')
@@ -66,17 +95,6 @@ def login_username():
         if user:
             return {'user':user}
     return {}
-
-@app.route('/question/', methods=['GET', 'POST'])
-def question():
-    is_login = session.get('username')
-    if is_login:
-        if request.method == 'GET':
-            return render_template('question.html')
-        else:
-            pass
-    else:
-        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run()
