@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import config
 from exts import db
-from models import User, Question
+from models import User, Question, Answer
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -74,9 +74,9 @@ def question():
                 return '输入内容不能为空！'
             else:
                 author = User.query.filter(User.username == is_login).first()
-                question = Question(title=title, content=content, author_id=author.id)
+                question = Question(title=title, content=content)
+                question.author = author
                 db.session.add(question)
-                print(question.create_time)
                 db.session.commit()
                 flash('发布成功！')
                 return redirect(url_for('index'))
@@ -87,6 +87,27 @@ def question():
 def detail(question_id):
     question_detail = Question.query.filter(Question.id == question_id).first()
     return render_template('detail.html', question_detail=question_detail)
+
+@app.route('/answer/', methods=['POST'])
+def answer():
+    is_login = session.get('username')
+    if is_login:
+        content = request.form.get('content')
+        question_id = request.form.get('question_id')
+        # print(content,question_id)  
+        answer = Answer(content=content)
+
+        author = User.query.filter(User.username == is_login).first()
+        answer.author = author
+
+        question = Question.query.filter(Question.id == question_id).first()
+        answer.question = question
+
+        db.session.add(answer)
+        db.session.commit()
+        return redirect(url_for('detail', question_id=question_id))
+    else:
+        return redirect(url_for('login'))
 
 @app.context_processor
 def login_username():
