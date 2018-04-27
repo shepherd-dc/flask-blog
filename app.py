@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import config
 from exts import db
 from models import User, Question, Answer
+from sqlalchemy import or_
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -109,6 +110,12 @@ def answer():
         return redirect(url_for('detail', question_id=question_id))
     else:
         return redirect(url_for('login'))
+
+@app.route('/search')
+def search():
+    q = request.args.get('q')
+    questions = Question.query.filter(or_(Question.title.contains(q), Question.content.contains(q))).order_by('-create_time')
+    return render_template('index.html', questions=questions)
 
 @app.context_processor
 def login_username():
