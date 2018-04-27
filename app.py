@@ -23,8 +23,8 @@ def login():
     else:
         username = request.form.get('username')
         password = request.form.get('password')
-        user = User.query.filter(User.username == username, User.password == password).first()
-        if user:
+        user = User.query.filter(User.username == username).first()
+        if user and user.check_password(password):
             session['username'] = username
             session.permanent = True
             flash('登录成功！')
@@ -123,6 +123,8 @@ def search():
     questions = Question.query.filter(or_(Question.title.contains(q), Question.content.contains(q))).order_by('-create_time')
     return render_template('index.html', questions=questions)
 
+# before_request -> 视图函数 -> context_processor
+
 @app.before_request
 def login_user():
     login_user = session.get('username')
@@ -141,8 +143,6 @@ def login_username():
     #     if user:
     #         return {'user':user}
     return {}
-
-# before_request -> 视图函数 -> context_processor
 
 if __name__ == '__main__':
     app.run()

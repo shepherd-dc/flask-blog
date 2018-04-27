@@ -1,5 +1,6 @@
 from exts import db
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -7,6 +8,18 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+
+    def __init__(self, *args, **kwargs):
+        email = kwargs.get('email')
+        username = kwargs.get('username')
+        password = kwargs.get('password')
+        self.email = email
+        self.username = username
+        self.password = generate_password_hash(password)
+
+    def check_password(self, raw_password):
+        result = check_password_hash(self.password, raw_password)
+        return result
 
 class Question(db.Model):
     __tablename__ = 'question'
