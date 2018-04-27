@@ -24,6 +24,6 @@ class Answer(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now, nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    question = db.relationship('Question', backref=db.backref('answers'))
+    question = db.relationship('Question', backref=db.backref('answers', order_by=create_time.desc()))
     author = db.relationship('User', backref=db.backref('answers'))
     

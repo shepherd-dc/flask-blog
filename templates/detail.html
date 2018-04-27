@@ -12,9 +12,9 @@
 </div>
 
 <div class="page-header">
-    <h4>回答（0）</h4>
+    <h4>回答（{{question_detail.count_num}}）</h4>
 </div>
-<div class="answer" style="width:80%;margin:0 auto;overflow:hidden;">
+<div class="answer" style="width:80%;margin:20px auto;overflow:hidden;">
     <form action="{{url_for('answer')}}" method="post">
         <div class="form-group">
             <textarea class="form-control" name="content" cols="30" rows="5"></textarea>
@@ -25,10 +25,10 @@
 </div>
 
 {% for answer in question_detail.answers %}
-<div class="media" style="width:80%;margin:20px auto;">
+<div class="media" style="width:80%;margin:0 auto;border-top:#fff 1px solid;padding:10px 0;">
     <div class="media-left">
         <a href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{url_for('static', filename='images/avatar.jpg')}}" data-holder-rendered="true" style="width: 64px; height: 64px;">
+          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{url_for('static', filename='images/avatar.jpg')}}" data-holder-rendered="true" style="width: 64px; height: 64px;; border-radius:4px;">
         </a>
     </div>
     <div class="media-body">
