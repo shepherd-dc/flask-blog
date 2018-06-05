@@ -3,7 +3,7 @@
 <div class="media index_media">
     <div class="media-left">
         <a href="#">
-          <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{url_for('static', filename='images/avatar.jpg')}}" data-holder-rendered="true" style="width: 64px; height: 64px;">
+            <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{url_for('static', filename='images/avatar.jpg')}}" data-holder-rendered="true" style="width: 64px; height: 64px;">
         </a>
     </div>
     <div class="media-body">
@@ -11,7 +11,8 @@
             <h4 class="media-heading">{{qa.title}}</h4>
             <p>{{qa.content}}</p>
         </a>
-        <span class="pull-right" style="padding-right:10px;"><b>{{qa.author.username}}</b> {{qa.create_time}}</span>
+        <span class="pull-right" style="padding-right:10px;">
+            <b>{{qa.author.username}}</b> {{qa.create_time}}</span>
     </div>
 </div>
 {% endfor %} {% endblock %}
